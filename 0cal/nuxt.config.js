@@ -41,6 +41,15 @@ export default {
     // https://go.nuxtjs.dev/emotion
     '@nuxtjs/emotion',
   ],
+  chakra: {
+    icons: {
+      iconPack: 'fa',
+      iconSet: {
+        faGlobeAfrica,
+        faEnvelope
+      }
+    },
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

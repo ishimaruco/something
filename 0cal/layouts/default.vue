@@ -28,3 +28,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.container {
+  @apply mx-auto max-w-none;
+}
+</style>
