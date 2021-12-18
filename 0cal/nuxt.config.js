@@ -32,6 +32,8 @@ export default {
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/composition-api/module',
+    'nuxt-typed-vuex',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -40,14 +42,35 @@ export default {
     '@chakra-ui/nuxt',
     // https://go.nuxtjs.dev/emotion
     '@nuxtjs/emotion',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: process.env.API_KEY,
+          authDomain: process.env.AUTH_DOMAIN,
+          projectId: process.env.PROJECT_ID,
+          storageBucket: process.env.STORE_BUCKET,
+          messagingSenderId: process.env.MESSAGING_SENDER_ID,
+          appId: process.env.APP_ID,
+          measurementId: process.env.MEASUREMENT_ID
+        },
+        services: {
+          auth: false,
+          firestore: true,
+          functions: true,
+          database: true,
+          remoteConfig: true
+        },
+      }
+    ]
   ],
   chakra: {
     icons: {
       iconPack: 'fa',
-      iconSet: {
-        faGlobeAfrica,
-        faEnvelope
-      }
+      // iconSet: {
+      //   faGlobeAfrica,
+      //   faEnvelope
+      // }
     },
   },
 

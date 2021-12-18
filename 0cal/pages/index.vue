@@ -1,37 +1,37 @@
 <template>
-  <CBox
-    v-bind="mainStyles[colorMode]"
-    d="flex"
-    flex-dir="column"
-    class="zero-cal-content py-8 px-6"
-  >
+  <c-box d="flex" flex-dir="column" class="zero-cal-content py-8 px-6">
     <header>
-      <CHeading text-align="center" mb="4">今日は何を食べた？</CHeading>
+      <c-heading text-align="center" mb="4">今日は何を食べた？</c-heading>
     </header>
     <main class="flex-1 min-h-screen">
       <div class="w-full">
         <c-input-group size="lg">
           <c-input
+            v-model="inputData.name"
             placeholder="今日何食べた？"
             variant="outline"
-            class="rounded-full bg-white py-3 px-5 placeholder-gray-500 w-full"
+            borderRadius="full"
+            class="rounded-full bg-white py-3 px-5 placeholder-gray-500"
           />
-          <c-input-right-element width="4.5rem">
+          <c-input-right-element>
             <c-icon-button
               variant-color="#E07F6A"
               aria-label="0カロリー理論を検索する"
-              icon="icon-submit"
+              icon="con-submit"
               class="rounded-full"
+              @click="submitHandler(inputData)"
             />
           </c-input-right-element>
         </c-input-group>
       </div>
     </main>
     <footer></footer>
-  </CBox>
+  </c-box>
 </template>
 
-<script lang="js">
+<script lang="ts">
+import { defineComponent, ref, useRouter } from "@nuxtjs/composition-api"
+
 import {
   CBox,
   CButton,
@@ -51,10 +51,9 @@ import {
   CInputGroup,
   CInputRightElement,
   CInput,
-} from '@chakra-ui/vue'
+} from "@chakra-ui/vue";
 
-export default {
-  name: 'App',
+export default defineComponent({
   components: {
     CBox,
     CButton,
@@ -70,50 +69,43 @@ export default {
     CModalCloseButton,
     CIconButton,
     CFlex,
+    CHeading,
     CInputGroup,
     CInputRightElement,
     CInput,
-    CHeading
   },
-  inject: ['$chakraColorMode', '$toggleColorMode'],
-  data () {
+
+  setup() {
+    const $router = useRouter()
+
+    const inputData = ref({
+      name: '',
+      logic: '',
+    })
+
+    const submitHandler = (food: string) => {
+      console.log(food, 'はほげほごだから0カロリー。')
+    }
+
+    const db = $store.dispatch('fetchFoods')
+    console.log('===========', db)
+
+    // const addZeroCal = async () => {
+    //   try {
+    //     await 
+    //   } catch {
+    //     console.log('error')
+    //   }
+    // }
+
     return {
-      showModal: false,
-      mainStyles: {
-        dark: {
-          bg: 'gray.700',
-          color: 'whiteAlpha.900'
-        },
-        light: {
-          bg: 'white',
-          color: 'gray.900'
-        }
-      }
-    }
+      // inject,
+      // colorMode,
+      inputData,
+      submitHandler,
+    };
   },
-  computed: {
-    colorMode () {
-      return this.$chakraColorMode()
-    },
-    theme () {
-      return this.$chakraTheme()
-    },
-    toggleColorMode () {
-      return this.$toggleColorMode
-    }
-  },
-  methods: {
-    showToast () {
-      this.$toast({
-        title: 'Account created.',
-        description: "We've created your account for you.",
-        status: 'success',
-        duration: 10000,
-        isClosable: true
-      })
-    }
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>
