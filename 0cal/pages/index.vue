@@ -1,36 +1,46 @@
 <template>
-  <c-box d="flex" flex-dir="column" class="zero-cal-content py-8 px-6">
-    <header>
-      <c-heading text-align="center" mb="4">今日は何を食べた？</c-heading>
-    </header>
-    <main class="flex-1 min-h-screen">
-      <div class="w-full">
-        <c-input-group size="lg">
-          <c-input
-            v-model="inputData.name"
-            placeholder="今日何食べた？"
-            variant="outline"
-            borderRadius="full"
-            class="rounded-full bg-white py-3 px-5 placeholder-gray-500"
-          />
-          <c-input-right-element>
-            <c-icon-button
-              variant-color="#E07F6A"
-              aria-label="0カロリー理論を検索する"
-              icon="con-submit"
-              class="rounded-full"
-              @click="submitHandler(inputData)"
+  <c-box d="flex" flex-dir="column" class="zero-cal-content px-6">
+    <c-box maxW="1440px" mx="auto" class="min-h-screen flex flex-col py-8">
+      <header>
+        <c-heading text-align="center" mb="4">今日は何を食べた？</c-heading>
+      </header>
+      <main class="flex-1 overflow-x-hidden">
+        <c-box mb="60px">
+          <c-input-group size="lg">
+            <c-input
+              v-model="inputData.name"
+              placeholder="今日何食べた？"
+              variant="outline"
+              borderRadius="full"
+              class="rounded-full bg-white py-3 px-5 placeholder-gray-500"
             />
-          </c-input-right-element>
-        </c-input-group>
-      </div>
-    </main>
-    <footer></footer>
+            <c-input-right-element>
+              <c-icon-button
+                variant-color="#E07F6A"
+                aria-label="0カロリー理論を検索する"
+                icon="con-submit"
+                class="rounded-full"
+                @click="submitHandler(inputData)"
+              />
+            </c-input-right-element>
+          </c-input-group>
+        </c-box>
+        <div v-if="name">
+          <p class="text-3xl font-bold">{{ name }}は{{ logic }}</p>
+        </div>
+        <div v-else>
+          <p class="text-3xl font-bold">
+            どうやらカロリーをまだ握りつぶせてないようだ。
+          </p>
+        </div>
+      </main>
+      <footer></footer>
+    </c-box>
   </c-box>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRouter } from "@nuxtjs/composition-api"
+import { defineComponent, ref, useRouter } from "@nuxtjs/composition-api";
 
 import {
   CBox,
@@ -52,6 +62,11 @@ import {
   CInputRightElement,
   CInput,
 } from "@chakra-ui/vue";
+
+type FoodsType = {
+  name: string;
+  logic: string;
+};
 
 export default defineComponent({
   components: {
@@ -76,23 +91,65 @@ export default defineComponent({
   },
 
   setup() {
-    const $router = useRouter()
+    const $router = useRouter();
 
     const inputData = ref({
-      name: '',
-      logic: '',
-    })
+      name: "",
+      logic: "",
+    });
 
-    const submitHandler = (food: string) => {
-      console.log(food, 'はほげほごだから0カロリー。')
-    }
+    const name = ref<string>("");
+    const logic = ref<string>("");
 
-    const db = $store.dispatch('fetchFoods')
-    console.log('===========', db)
+    const foods = [
+      {
+        name: "カステラ",
+        logic: "潰したらピンポン玉くらい小さくなるので、0カロリー。",
+      },
+      {
+        name: "駅弁",
+        logic:
+          "新幹線で食べるもの。新幹線に乗って移動するとカロリーはついていけないので0カロリー",
+      },
+      {
+        name: "王将アイス",
+        logic: "２で割れないから0カロリー。",
+      },
+      {
+        name: "アイス",
+        logic:
+          "冷たい。冷たくすることによってカロリーは全部飛ぶので0カロリー。",
+      },
+      {
+        name: "キャベツ太郎",
+        logic: "キャベツが入っている。キャベツは野菜なので0カロリー。",
+      },
+      {
+        name: "バウムクーヘン",
+        logic:
+          "真ん中のカロリーのあるところを全部くり抜いてるのでカロリーゼロ。",
+      },
+      {
+        name: "白米",
+        logic: "白い。白い物は基本的にカロリーがないので、0カロリー。",
+      },
+    ];
+
+    const submitHandler = (food: FoodsType) => {
+      name.value = "";
+      logic.value = "";
+      const getFood = foods.find((it) => it.name === food.name);
+      if (!getFood) return;
+      name.value = getFood.name;
+      logic.value = getFood.logic;
+    };
+
+    // const db = $store.dispatch('fetchFoods')
+    // console.log('===========', db)
 
     // const addZeroCal = async () => {
     //   try {
-    //     await 
+    //     await
     //   } catch {
     //     console.log('error')
     //   }
@@ -101,6 +158,8 @@ export default defineComponent({
     return {
       // inject,
       // colorMode,
+      name,
+      logic,
       inputData,
       submitHandler,
     };
