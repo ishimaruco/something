@@ -10,9 +10,11 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/nuxt": "^0.3.5",
     "@chakra-ui/vue": "^0.9.4",
     "@emotion/css": "^11.7.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@nuxtjs/composition-api": "^0.31.0",
     "@nuxtjs/emotion": "^0.1.0",
     "@nuxtjs/firebase": "^8.1.1",

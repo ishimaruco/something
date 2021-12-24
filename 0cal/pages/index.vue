@@ -1,6 +1,10 @@
 <template>
   <c-box d="flex" flex-dir="column" class="zero-cal-content px-6">
-    <c-box maxW="1440px" mx="auto" class="min-h-screen flex flex-col py-8">
+    <c-box
+      maxW="1440px"
+      mx="auto"
+      class="min-h-screen flex flex-col py-8 w-full"
+    >
       <header>
         <c-heading text-align="center" mb="4">今日は何を食べた？</c-heading>
       </header>
@@ -15,23 +19,21 @@
               class="rounded-full bg-white py-3 px-5 placeholder-gray-500"
             />
             <c-input-right-element>
-              <c-icon-button
-                variant-color="#E07F6A"
-                aria-label="0カロリー理論を検索する"
-                icon="con-submit"
-                class="rounded-full"
-                @click="submitHandler(inputData)"
-              />
+              <c-button px="0" rounded="full" @click="submitHandler(inputData)">
+                <img src="@/assets/image/icon-submit.svg" alt="">
+              </c-button>
             </c-input-right-element>
           </c-input-group>
         </c-box>
-        <div v-if="name">
-          <p class="text-3xl font-bold">{{ name }}は{{ logic }}</p>
-        </div>
-        <div v-else>
-          <p class="text-3xl font-bold">
-            どうやらカロリーをまだ握りつぶせてないようだ。
-          </p>
+        <div v-if="show">
+          <div v-if="name">
+            <p class="text-3xl font-bold">{{ name }}は{{ logic }}</p>
+          </div>
+          <div v-else>
+            <p class="text-3xl font-bold">
+              どうやらカロリーをまだ握りつぶせてないようだ。
+            </p>
+          </div>
         </div>
       </main>
       <footer></footer>
@@ -98,6 +100,8 @@ export default defineComponent({
       logic: "",
     });
 
+    const show = ref(false);
+
     const name = ref<string>("");
     const logic = ref<string>("");
 
@@ -136,6 +140,7 @@ export default defineComponent({
     ];
 
     const submitHandler = (food: FoodsType) => {
+      show.value = true;
       name.value = "";
       logic.value = "";
       const getFood = foods.find((it) => it.name === food.name);
@@ -158,6 +163,7 @@ export default defineComponent({
     return {
       // inject,
       // colorMode,
+      show,
       name,
       logic,
       inputData,
@@ -169,7 +175,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .zero-cal-content {
-  background: linear-gradient(180deg, #f6bd6a 0%, #fad8a1 100%);
-  // background-image: url('@/assets/image/illust-zero.svg');
+  // background-image: linear-gradient(
+  //     rgba(0, 0, 255, 0.5),
+  //     rgba(255, 255, 0, 0.5)
+  //   ),
+  //   url("~assets/image/illust-zero.svg");
+  background-image: linear-gradient(180deg, #f6bd6a 0%, #fad8a1 100%),
+    url("~assets/image/illust-zero.svg");
+  background-position: bottom left;
+  background-repeat: no-repeat;
 }
 </style>

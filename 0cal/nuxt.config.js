@@ -67,6 +67,9 @@ export default {
   chakra: {
     icons: {
       iconPack: 'fa',
+      // extend: {
+      //   ...customIcons,
+      // }
       // iconSet: {
       //   faGlobeAfrica,
       //   faEnvelope
