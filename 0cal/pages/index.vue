@@ -175,11 +175,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .zero-cal-content {
-  // background-image: linear-gradient(
-  //     rgba(0, 0, 255, 0.5),
-  //     rgba(255, 255, 0, 0.5)
-  //   ),
-  //   url("~assets/image/illust-zero.svg");
   background-image: linear-gradient(180deg, #f6bd6a 0%, #fad8a1 100%),
     url("~assets/image/illust-zero.svg");
   background-position: bottom left;
